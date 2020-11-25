@@ -53,8 +53,8 @@ export class AppComponent {
 
     of({ errors: [{ message: 'Failed to add book' }] }).subscribe((res) => {
       if (res.errors) {
-        this.apolloErrorAlert = res.errors[0].message;
-        console.log('this.errorAlert', this.apolloErrorAlert);
+        this.rxjsErrorAlert = res.errors[0].message;
+        console.log('this.errorAlert', this.rxjsErrorAlert);
       }
     });
   }
