@@ -1,16 +1,32 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { Apollo } from 'apollo-angular';
+import { InMemoryCache } from '@apollo/client/core';
+import { HttpLink } from 'apollo-angular/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
+import { MyModalComponent } from './my-modal/my-modal.component';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent, MyModalComponent],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {
+  constructor(apollo: Apollo, httpLink: HttpLink) {
+    // Create Apollo client.
+    apollo.create({
+      cache: new InMemoryCache({}),
+      link: httpLink.create({ uri: 'http://localhost:4000' }),
+    });
+  }
+}
