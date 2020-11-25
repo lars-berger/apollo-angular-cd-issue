@@ -8,10 +8,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { MyModalComponent } from './my-modal/my-modal.component';
 
 @NgModule({
-  declarations: [AppComponent, MyModalComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
