@@ -5,8 +5,14 @@ import { NEVER, of } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  template: `
+    <p>
+      Error alert:
+      {{ errorAlert }}
+    </p>
+
+    <button (click)="addBook()">Add book</button>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
