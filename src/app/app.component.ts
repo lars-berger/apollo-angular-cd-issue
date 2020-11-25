@@ -7,8 +7,13 @@ import { NEVER, of } from 'rxjs';
   selector: 'app-root',
   template: `
     <p>
-      Error alert:
-      {{ errorAlert }}
+      Error alert (Apollo):
+      {{ apolloErrorAlert }}
+    </p>
+
+    <p>
+      Error alert (RxJS):
+      {{ rxjsErrorAlert }}
     </p>
 
     <button (click)="addBook()">Add book</button>
@@ -16,7 +21,8 @@ import { NEVER, of } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  errorAlert = '';
+  apolloErrorAlert = '';
+  rxjsErrorAlert = '';
 
   constructor(private apollo: Apollo) {}
 
@@ -38,20 +44,18 @@ export class AppComponent {
       })
       .subscribe((res) => {
         if (res.errors) {
-          this.errorAlert = res.errors[0].message;
-          console.log('this.errorAlert', this.errorAlert);
-          return NEVER;
+          this.apolloErrorAlert = res.errors[0].message;
+          console.log('this.errorAlert', this.apolloErrorAlert);
         }
       });
 
     // However, using RxJS of to create the same observable succeeds:
 
-    // of({ errors: [{ message: 'Error from RxJS of' }] }).subscribe((res) => {
-    //   if (res.errors) {
-    //     this.errorAlert = res.errors[0].message;
-    //     console.log('this.errorAlert', this.errorAlert);
-    //     return NEVER;
-    //   }
-    // });
+    of({ errors: [{ message: 'Failed to add book' }] }).subscribe((res) => {
+      if (res.errors) {
+        this.apolloErrorAlert = res.errors[0].message;
+        console.log('this.errorAlert', this.apolloErrorAlert);
+      }
+    });
   }
 }
