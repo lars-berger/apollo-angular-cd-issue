@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { DocumentNode } from 'graphql';
-import { NEVER } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { NEVER, of } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -25,17 +24,28 @@ export class AppComponent {
       }
     `;
 
+    // Using 'errorPolicy': 'all' in Apollo config.
+
     this.apollo
       .mutate<any, any>({
         mutation: CreateBook,
       })
-      .pipe(
-        catchError((e) => {
-          this.errorAlert = e;
+      .subscribe((res) => {
+        if (res.errors) {
+          this.errorAlert = res.errors[0].message;
           console.log('this.errorAlert', this.errorAlert);
           return NEVER;
-        })
-      )
-      .subscribe();
+        }
+      });
+
+    // However, using RxJS of to create the same observable succeeds:
+
+    // of({ errors: [{ message: 'Error from RxJS of' }] }).subscribe((res) => {
+    //   if (res.errors) {
+    //     this.errorAlert = res.errors[0].message;
+    //     console.log('this.errorAlert', this.errorAlert);
+    //     return NEVER;
+    //   }
+    // });
   }
 }

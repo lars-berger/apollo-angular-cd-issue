@@ -26,6 +26,17 @@ export class AppModule {
     apollo.create({
       cache: new InMemoryCache({}),
       link: httpLink.create({ uri: 'http://localhost:4000' }),
+      defaultOptions: {
+        watchQuery: {
+          errorPolicy: 'all',
+        },
+        query: {
+          errorPolicy: 'all',
+        },
+        mutate: {
+          errorPolicy: 'all',
+        },
+      },
     });
   }
 }
